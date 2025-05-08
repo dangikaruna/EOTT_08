@@ -1,9 +1,9 @@
-// Import necessary modules
-const { DataTypes, UniqueConstraintError } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const sequelize = require("../../db/connect");
+const CourseCategory = require("./courseCategory");
 
-const courseType = sequelize.define(
-  "courseType",
+const CourseType = sequelize.define(
+  "CourseType",
   {
     courseId: {
       type: DataTypes.INTEGER,
@@ -11,19 +11,21 @@ const courseType = sequelize.define(
       autoIncrement: true,
     },
     categoryId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: CourseCategory,
+        key: "categoryId",
       },
-      
+    },
     courseName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     courseUniquePrefix: {
-       Unique:true
-      },
-    
+      type: DataTypes.STRING,
+      unique: true,
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
@@ -45,13 +47,11 @@ const courseType = sequelize.define(
   },
   {
     timestamps: true,
-    tableName: "courseType",
+    tableName: "CourseType",
   }
 );
-courseType.belongsTo(courseCategory, {
-  foreignKey: "categoryId"
-});
 
-courseContent.belongsTo(subCourse, { foreignKey: "subCourseId" });
-// Export the ComponentType model
-module.exports = courseType;
+CourseType.belongsTo(CourseCategory, { foreignKey: "categoryId" });
+CourseCategory.hasMany(CourseType, { foreignKey: "categoryId" });
+
+module.exports = CourseType;

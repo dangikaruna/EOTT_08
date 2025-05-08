@@ -1,30 +1,46 @@
-const { DataTypes, UniqueConstraintError } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const sequelize = require("../../db/connect");
+const CourseType = require("./coursesType");
+const CourseCategory = require("./courseCategory");
 
-const subCourse = sequelize.define(
-  "subCourses",
+const SubCourse = sequelize.define(
+  "SubCourse",
   {
-    subCoursesId: {
+    subCourseId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      unique: true,
-
     },
-   subCouseName: {
+    subCourseName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     courseId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+      allowNull: false,
+      references: {
+        model: CourseType,
+        key: "courseId",
+      },
+    },
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: CourseCategory,
+        key: "categoryId",
+      },
     },
     coursePathDetails: {
-      type: DataTypes.JSON
+      type: DataTypes.JSON,
     },
-    ContentType: {
-      type: DataTypes.STRING
+    contentType: {
+      // type: DataTypes.ARRAY(DataTypes.ENUM("mp4", "audio", "pdf", "word")),
+      // defaultValue: ["mp4", "audio", "pdf", "word"],
+      // allowNull: true,
+      type: DataTypes.JSON,
+      defaultValue: ["mp4", "audio", "pdf", "word"],
+      allowNull: true,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -47,15 +63,14 @@ const subCourse = sequelize.define(
   },
   {
     timestamps: true,
-    tableName: "subCourse",
+    tableName: "SubCourse",
   }
 );
-subCourse.belongsTo(courseType, 
-  { foreignKey: "courseId" }
-);
-subCourse.belongsTo(courseCategory, 
-  { foreignKey: "categoryId" }
-);
-// Export the ComponentType model
-module.exports = subCourse;
-;
+
+SubCourse.belongsTo(CourseType, { foreignKey: "courseId" });
+CourseType.hasMany(SubCourse, { foreignKey: "courseId" });
+
+SubCourse.belongsTo(CourseCategory, { foreignKey: "categoryId" });
+CourseCategory.hasMany(SubCourse, { foreignKey: "categoryId" });
+
+module.exports = SubCourse;

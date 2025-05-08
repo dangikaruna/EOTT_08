@@ -1,32 +1,40 @@
-// Import necessary modules
-const { DataTypes, UniqueConstraintError } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const sequelize = require("../../db/connect");
+const SubCourse = require("./subCourses");
 
-const courseContent = sequelize.define(
-  "courseContent",
+const CourseContent = sequelize.define(
+  "CourseContent",
   {
     contentId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      Unique: true,
-
     },
-   
+    subCourseId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: SubCourse,
+        key: "subCourseId",
+      },
+    },
+    courseDescription: {
+      type: DataTypes.STRING,
+      defaultValue: "",
+    },
     contentName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    //courseUniquePrefix+sunCourseUniquePrefix+id
-   contentPrefix: {
-      Unique: true
+    contentPrefix: {
+      type: DataTypes.STRING,
+      unique: false,
     },
     contentPath: {
-      type: DataTypes.JSON
+      type: DataTypes.JSON,
     },
-    // mp4,pdf,audio
-    ContentType: {
-      type: DataTypes.STRING
+    contentType: {
+      type: DataTypes.STRING,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -49,8 +57,11 @@ const courseContent = sequelize.define(
   },
   {
     timestamps: true,
-    tableName: "courseContent",
+    tableName: "CourseContent",
   }
 );
-// Export the ComponentType model
-module.exports = courseContent;
+
+CourseContent.belongsTo(SubCourse, { foreignKey: "subCourseId" });
+SubCourse.hasMany(CourseContent, { foreignKey: "subCourseId" });
+
+module.exports = CourseContent;

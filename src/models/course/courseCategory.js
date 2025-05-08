@@ -1,9 +1,8 @@
-// Import necessary modules
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../db/connect");
 
-const courseCategory = sequelize.define(
-  "courseCategory",
+const CourseCategory = sequelize.define(
+  "CourseCategory",
   {
     categoryId: {
       type: DataTypes.INTEGER,
@@ -14,7 +13,6 @@ const courseCategory = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
@@ -36,8 +34,8 @@ const courseCategory = sequelize.define(
   },
   {
     timestamps: true,
-    tableName: "courseCategory",
+    tableName: "CourseCategory",
   }
 );
-// Export the ComponentType model
-module.exports = courseCategory;
+
+module.exports = CourseCategory;
