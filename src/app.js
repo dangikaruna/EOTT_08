@@ -69,8 +69,8 @@ app.use("", api);
 //Importing modules
 /***************************LOGIN  & SIGNUP MODULE API*********************/
 const { login } = require("./controllers/login/login");
-const { addUser } = require("./controllers/signUp/addUser");
-const { getAllUsers } = require("./controllers/users/getAllUsers");
+const { addUser } = require("./controllers/user/addUser");
+const { getAllUsers } = require("./controllers/user/getAllUsers");
 
 const { uploadCourse } = require("./controllers/courses/uploadCourse");
 const {
