@@ -78,6 +78,7 @@ const login = async (email, password) => {
         roleType: roleTypeNameValue,
       };
     } catch (error) {
+      console.log(error)
       // Log the error and return a generic error message
       logger.error(error.stack);
       return {

@@ -6,7 +6,6 @@ const fs = require("fs");
 const notFound = require("./middleware/notFound");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
 const multer = require("multer"); // Multer storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -71,7 +70,8 @@ app.use("", api);
 const { login } = require("./controllers/login/login");
 const { addUser } = require("./controllers/user/addUser");
 const { getAllUsers } = require("./controllers/user/getAllUsers");
-
+const { editUser } = require("./controllers/user/editUser");
+const { deleteUser } = require("./controllers/user/deleteUser");
 const { uploadCourse } = require("./controllers/courses/uploadCourse");
 const {
   addNewCourseCategory,
@@ -84,6 +84,8 @@ const { getCourseContent } = require("./controllers/courses/getCourseContent");
 /****************************************************************/
 api.post("/login", login);
 api.post("/addUser", addUser);
+api.patch("/editUser", editUser);
+api.delete("/deleteUser", deleteUser);
 api.post(
   "/uploadCourse",
   upload.single("fileInformations"),

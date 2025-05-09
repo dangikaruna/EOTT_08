@@ -6,7 +6,7 @@ const { configurations } = require("../../config/config");
 const { logger } = require("../../logs/logger");
 
 // Add user request
-exports.addUser = asyncWrapper(async (req, res) => {
+exports.deleteUser = asyncWrapper(async (req, res) => {
   logger.info(configurations.logger.addUserLogger);
 
 
